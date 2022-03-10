@@ -1,0 +1,7 @@
+        BSSID              SSID                MODE   CHAN  RATE        SIGNAL  BARS  SECURITY  
+     1) 14:57:9F:04:DA:F4  home                Infra  1     130 Mbit/s  77      ▂▄▆_  WPA1 WPA2 
+     2) 14:57:9F:04:DA:F4  home                Infra  1     130 Mbit/s  69      ▂▄▆_  WPA1 WPA2 
+     3) F4:F2:6D:E9:BD:82  Montage             Infra  6     135 Mbit/s  49      ▂▄__  WPA2      
+     4) AC:37:28:0A:37:C9  saligram_fdamk      Infra  4     130 Mbit/s  39      ▂▄__  WPA1 WPA2 
+     5) C8:3A:35:08:85:C0  Sakhamari Pvt. Ltd  Infra  6     135 Mbit/s  32      ▂▄__  WPA1      
+     6) CC:ED:21:26:C9:79  sagarmatha03_fdamk  Infra  13    130 Mbit/s  25      ▂___  WPA1 WPA2 
