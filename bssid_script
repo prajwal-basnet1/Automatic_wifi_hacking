@@ -1,0 +1,79 @@
+#!/bin/bash
+IFS=$'\n'
+#
+
+function macaddress {	
+address=""
+first_list=("A" "C" "E" 2 4 6 8)
+first_byte=$(($RANDOM % 10))${first_list[1+$RANDOM % ${#first_list[@]} ]}
+if [[ $(echo "$first_byte" | wc -c) -eq 2 ]]
+then
+	first_byte=$first_byte"2"
+fi
+			for i in {1..5}
+			do
+
+				alphabet_arr=("A" "B" "C" "D" "E" "F")
+				select_alpha=${alphabet_arr[1+$RANDOM % ${#alphabet_arr[@]} ]} 
+			if [[ $(echo "$select_alpha" | wc -c ) -eq 1 ]]
+			then
+				select_alpha=$select_alpha$(($RANDOM % 10))
+			fi
+			address=$address:$(($RANDOM % 10))$select_alpha
+			done
+address=$first_byte$address
+echo $address
+
+}
+
+function airodump() {
+
+	airodump-ng --bssid $selected_bssid -c $selected_channel -w $selected_name $selected_nic &
+
+}
+
+
+function wifi_scanning {
+	nmcli dev wifi | tr "*" " " | sed 's/IN-USE/      /;s/^ \+//g' | nl -s ") " -b p: | tee nmcli_output
+	read -p "Enter option# " wifi_num
+	
+	selected_bssid=$( cat nmcli_output | grep "Infra" | awk '{print $2}' | sed -n "${wifi_num}p" )
+	selected_channel=$(cat nmcli_output | grep "Infra" | sed 's/^.*Infra//'| sed 's/^ \+//' | awk '{print $1}' |sed -n "${wifi_num}p")
+	selected_name=$(cat nmcli_output | grep "Infra" | sed 's/^ \+//' | awk -F"  " {print $4} | sed -n "${wifi_num}p")
+
+	echo "$selected_bssid"
+	echo "$selected_channel"
+
+	exit
+	clear;
+	nmcli device status | awk '{print $1}' | nl -s ") " -b p\[a-z\] | grep -v "lo\|p2p\|eth\?" | tee nic_output
+
+	read -p "Enter the network adapter that supports monitor mode[q to quit]: " nic
+	
+	selected_nic=$( cat nic_output | awk '{print $2}' | sed '/^$/d' | sed -n "${nic}p" )
+	clear;
+
+	echo "Turning off the network adapter $selected_nic ....";
+	echo "Enter ur sudo password to turn off network adapter."
+	sudo ifconfig $selected_nic down
+
+	read -p "Do you want to change the macaddress[Y/n]: " mac_change
+	case mac_chage in 
+		Y|y)
+				sudo ifconfig $selected_nic hw ether `macaddress`;;
+		*)
+			;;
+	esac
+
+
+	echo ""
+	echo ""
+
+	echo "Turning on the monitor mode on $selected_nic ....";
+
+#	`airodump`
+	
+	
+
+}
+wifi_scanning
